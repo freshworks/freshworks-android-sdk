@@ -7,7 +7,7 @@
 
 Freshworks Android SDK can be integrated into your Android application with the following steps.
 
-1. Copy the following three files into the `libs` folder of your app module.
+1. Download and extract `sdkModules.zip` into the `libs` folder of your app module.
 2. Add these as dependencies in your app module-level  build.gradle file
    
 ```groovy 
