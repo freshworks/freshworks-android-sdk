@@ -1,6 +1,3 @@
-
-
-
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
@@ -39,12 +36,6 @@ android {
 
 dependencies {
 
-
-    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
-
-
-//    implementation 'com.freshworks.sdk:widgetCore:0.0.1'
-
     //Firebase messaging
     implementation "com.google.firebase:firebase-messaging:20.0.1"
 
@@ -56,8 +47,10 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
 
+    //Webkit
     implementation "androidx.webkit:webkit:1.5.0"
 
+    //Gson
     implementation 'com.google.code.gson:gson:2.10.1'
 
     implementation 'androidx.core:core-ktx:1.7.0'

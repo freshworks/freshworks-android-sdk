@@ -24,9 +24,8 @@ class MainActivity : AppCompatActivity() {
             "3a7a632a-32f0-44db-93b2-113c8867817e",
             "mobiletestingstaging-org-844f4ac14e9078016883932.freshpori.com",
             "//fm-staging-us-app-cdnjs.s3.amazonaws.com/crm/7575962/6419591.js"
-        )
-        ) {
-            println("SDK has initialized!")
+        )) {
+            //Call back when SDK initialization is complete.
         }
 
         register()
