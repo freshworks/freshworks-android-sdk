@@ -130,8 +130,10 @@ FreshworksSDK.showConversations(
                         listOf("topicTag") //The tags that will be used to filter the topics.
 )
 ```
-### Specific Conversation
-To open the specific conversation based on the conversation reference ID, use the example below.
+### Parallel Conversation
+
+In Freshchat, it used to be difficult to have multiple conversations on the same topic. This was particularly challenging when dealing with Payment Support in an e-commerce setting, where many transactions had to be managed under one topic. But now, we have a solution called Parallel Conversation, which allows multiple conversation threads on a single topic. To use this feature, simply provide a unique conversationReferenceId with the FreshworksSDK. Support representatives can help customers set up unique conversationReferenceIds, which will enable seamless topic-specific conversations. To view the conversations, customers can use the API showConversation.
+
 ```
  FreshworksSDK.showConversation(
                         context,
@@ -338,3 +340,8 @@ Step 5: Create a valid JWT using the UUID received from Step 4. Then, update the
 ```
 
 Note: The above API is also responsible for updating the user details. While creating the JWT, the details which need to be updated should be added to the payload.
+
+## Support
+support@freshchat.com
+
+[Support Portal](https://support.freshchat.com/en/support/home)
