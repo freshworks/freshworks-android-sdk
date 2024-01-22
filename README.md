@@ -186,7 +186,7 @@ override fun onMessageReceived(message: RemoteMessage) {
 
 
 ## Unread Count
-To obtain the total number of unread messages, use the following code snippet. This is used when the default Freshchat bubble is hidden, and a customized button is used.
+To obtain the total number of unread messages, use the following code snippet.
 
 ```
 LocalBroadcastManager.getInstance(this).registerReceiver(object: BroadcastReceiver() {
@@ -205,7 +205,7 @@ LocalBroadcastManager.getInstance(this).registerReceiver(object: BroadcastReceiv
 ```
 
 
-## Multi-Language Support (Locale Change)
+## Multi-Language Support (Changing the SDK Locale)
 FreshworksSDK provides multilanguage support. The list of all supported languages and their keys are provided in the table below.
 
 | Language Code | Language                     |
@@ -277,11 +277,11 @@ FreshworksSDK.setUserLocale(languageCode)
 
 ## JWT Authentication
 Enabling user authentication using JSON Web Token:
-Freshchat uses JSON Web Token (JWT) to ensure that only authenticated users can start a conversation with you through the Freshchat messenger. Whenever there is an event related to the user's authentication status or the messenger, Freshchat sends a callback to notify you along with the user's authentication status.
+Freshchat uses JSON Web Token (JWT) to ensure that only authenticated users can start a conversation with you through the Freshchat messenger. Whenever there is an event related to the user's authentication status, Freshchat sends an event to notify you about the change in the status.
 
 Step 1: Create the JWT without UUID using the public & private keys.
 
-Step 2: Initiate the SDK with the above JWT.
+Step 2: Initiate the SDK with the JWT created in the above step.
 
 ```
 FreshworksSDK.initialize(this, SDKConfig(
