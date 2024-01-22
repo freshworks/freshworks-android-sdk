@@ -102,6 +102,7 @@ LocalBroadcastManager.getInstance(this).registerReceiver(object: BroadcastReceiv
 
 If you have set an external identifier for a user, and the user initiates a chat, the SDK will provide a "Restore ID" to you, so you can restore this particular user later.
 To listen to the "Restore ID" generated event, refer to the below example.
+
 ```kotlin
 LocalBroadcastManager.getInstance(this).registerReceiver(object: BroadcastReceiver() {
           override fun onReceive(context: Context?, intent: Intent?) {
@@ -181,6 +182,26 @@ override fun onMessageReceived(message: RemoteMessage) {
         FreshworksSDK.handleFCMNotification(message.data)
     }
 }
+```
+
+
+## Unread Count
+To obtain the total number of unread messages, use the following code snippet. This is used when the default Freshchat bubble is hidden, and a customized button is used.
+
+```
+LocalBroadcastManager.getInstance(this).registerReceiver(object: BroadcastReceiver() {
+          override fun onReceive(context: Context?, intent: Intent?) {
+              when (intent?.action) {
+                  EventID.UNREAD_COUNT -> {
+                    Log.d("FreshworksSDK, intent.getIntExtra(EventID.UNREAD_COUNT, 0))
+                  }
+                }
+              }
+          }
+
+      }, IntentFilter().apply {
+           addAction(EventID.UNREAD_COUNT)
+      })
 ```
 
 
@@ -328,6 +349,7 @@ Step 4: Once the user states update is received, if the user state is NOT_LOADED
 
         }, IntentFilter().apply {
             addAction(EventID.USER_STATE)
+            addAction(EventID.GET_UUID_SUCCESS)
         })
 ```
 
