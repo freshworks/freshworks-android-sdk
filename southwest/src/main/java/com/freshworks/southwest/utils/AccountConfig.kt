@@ -4,10 +4,9 @@ import com.freshworks.sdk.data.SDKConfig
 
 object AccountConfig {
     val defaultAccount = SDKConfig(
-        appId = "Your-app-ID",
-        appKey = "Your-app-Key",
-        domain = "Your-domain",
-        widgetUrl = "Your-widget-URL",
-        widgetId = "Your-widget-ID"
+        appId = "YOUR_APP_ID",
+        appKey = "YOUR_APP_KEY",
+        domain = "YOUR_APP_DOMAIN",
+        widgetUrl = "YOUR_WIDGET_URL"
     )
 }

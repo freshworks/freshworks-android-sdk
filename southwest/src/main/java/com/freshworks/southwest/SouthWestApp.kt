@@ -81,7 +81,6 @@ class SouthWestApp : Application() {
             myReceiver,
             IntentFilter().apply {
                 addAction(EventID.USER_CREATED)
-                addAction(EventID.RESTORE_ID_GENERATED)
                 addAction(EventID.UNREAD_COUNT)
                 addAction(EventID.USER_STATE)
                 addAction(EventID.GET_UUID_SUCCESS)
