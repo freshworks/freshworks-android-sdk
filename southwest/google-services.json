@@ -1,0 +1,271 @@
+{
+  "project_info": {
+    "project_number": "762557445332",
+    "firebase_url": "https://hotlineandroidagentapp.firebaseio.com",
+    "project_id": "hotlineandroidagentapp",
+    "storage_bucket": "hotlineandroidagentapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:762557445332:android:9ae19c7f3aaa30b9dc3741",
+        "android_client_info": {
+          "package_name": "com.demoapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "762557445332-j4bcj1r2t7jims96l3qdvrd6rmmhaodg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5TTlR7YEFWjSbaIH6r4wpztuv2xpkKiY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "762557445332-j4bcj1r2t7jims96l3qdvrd6rmmhaodg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "762557445332-6nmidco91cajugfmi9g7big1o60pi1pb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.freshchat.agent.ios"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:762557445332:android:c323ba466a6c76b7",
+        "android_client_info": {
+          "package_name": "com.dieam.reactnativepushnotification"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "762557445332-j4bcj1r2t7jims96l3qdvrd6rmmhaodg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5TTlR7YEFWjSbaIH6r4wpztuv2xpkKiY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "762557445332-j4bcj1r2t7jims96l3qdvrd6rmmhaodg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "762557445332-6nmidco91cajugfmi9g7big1o60pi1pb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.freshchat.agent.ios"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:762557445332:android:03ee2d9ff7cd810e",
+        "android_client_info": {
+          "package_name": "com.example.demoapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "762557445332-j4bcj1r2t7jims96l3qdvrd6rmmhaodg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5TTlR7YEFWjSbaIH6r4wpztuv2xpkKiY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "762557445332-j4bcj1r2t7jims96l3qdvrd6rmmhaodg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "762557445332-6nmidco91cajugfmi9g7big1o60pi1pb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.freshchat.agent.ios"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:762557445332:android:14062a7408f78e3f",
+        "android_client_info": {
+          "package_name": "com.example.freshchatdemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "762557445332-j4bcj1r2t7jims96l3qdvrd6rmmhaodg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5TTlR7YEFWjSbaIH6r4wpztuv2xpkKiY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "762557445332-j4bcj1r2t7jims96l3qdvrd6rmmhaodg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "762557445332-6nmidco91cajugfmi9g7big1o60pi1pb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.freshchat.agent.ios"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:762557445332:android:3eba8277c6960117",
+        "android_client_info": {
+          "package_name": "com.freshchat.agent.android.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "762557445332-c0s1eiffu100hr9le19tjtp67713j8os.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.freshchat.agent.android.dev",
+            "certificate_hash": "685b78d81f70abdf1d49396003432b45b7bf3186"
+          }
+        },
+        {
+          "client_id": "762557445332-j4bcj1r2t7jims96l3qdvrd6rmmhaodg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5TTlR7YEFWjSbaIH6r4wpztuv2xpkKiY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "762557445332-j4bcj1r2t7jims96l3qdvrd6rmmhaodg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "762557445332-6nmidco91cajugfmi9g7big1o60pi1pb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.freshchat.agent.ios"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:762557445332:android:5452933431b47c26",
+        "android_client_info": {
+          "package_name": "com.freshworks.androidxsample"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "762557445332-j4bcj1r2t7jims96l3qdvrd6rmmhaodg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5TTlR7YEFWjSbaIH6r4wpztuv2xpkKiY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "762557445332-j4bcj1r2t7jims96l3qdvrd6rmmhaodg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "762557445332-6nmidco91cajugfmi9g7big1o60pi1pb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.freshchat.agent.ios"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:762557445332:android:a98c10079945f1eddc3741",
+        "android_client_info": {
+          "package_name": "com.freshworks.southwest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "762557445332-j4bcj1r2t7jims96l3qdvrd6rmmhaodg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5TTlR7YEFWjSbaIH6r4wpztuv2xpkKiY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "762557445332-j4bcj1r2t7jims96l3qdvrd6rmmhaodg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "762557445332-6nmidco91cajugfmi9g7big1o60pi1pb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.freshchat.agent.ios"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

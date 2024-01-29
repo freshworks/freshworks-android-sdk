@@ -1,0 +1,11 @@
+detekt {
+    toolVersion = "1.23.1"
+    config = files("$project.rootDir/config/detekt.yml")
+    buildUponDefaultConfig = true
+
+    reports {
+        html.enabled = true
+        xml.enabled = false
+        txt.enabled = false
+    }
+}
