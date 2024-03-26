@@ -24,7 +24,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.freshworks.sdk.data.WebWidgetConfig
+import com.freshworks.sdk.data.FilterType.Companion.ARTICLE
+import com.freshworks.sdk.data.FilterType.Companion.CATEGORY
+import com.freshworks.sdk.data.FilterType.Companion.CONVERSATION
 import com.freshworks.southwest.R
 import com.freshworks.southwest.components.FieldConfig
 import com.freshworks.southwest.components.FormField
@@ -109,27 +111,21 @@ fun SetFilterType(filterType: String, onValueChange: (String) -> Unit) {
     ) {
         TextChip(
             textId = R.string.conversation,
-            isSelected = filterType == WebWidgetConfig.FilterType.CONVERSATION
+            isSelected = filterType == CONVERSATION
         ) {
-            onValueChange.invoke(WebWidgetConfig.FilterType.CONVERSATION)
+            onValueChange.invoke(CONVERSATION)
         }
         TextChip(
             textId = R.string.category,
-            isSelected = filterType == WebWidgetConfig.FilterType.CATEGORY
+            isSelected = filterType == CATEGORY
         ) {
-            onValueChange.invoke(WebWidgetConfig.FilterType.CATEGORY)
+            onValueChange.invoke(CATEGORY)
         }
         TextChip(
             textId = R.string.article,
-            isSelected = filterType == WebWidgetConfig.FilterType.ARTICLE
+            isSelected = filterType == ARTICLE
         ) {
-            onValueChange.invoke(WebWidgetConfig.FilterType.ARTICLE)
-        }
-        TextChip(
-            textId = R.string.none,
-            isSelected = filterType == WebWidgetConfig.FilterType.NONE
-        ) {
-            onValueChange.invoke(WebWidgetConfig.FilterType.NONE)
+            onValueChange.invoke(ARTICLE)
         }
     }
 }
@@ -164,6 +160,6 @@ fun TextChip(textId: Int, isSelected: Boolean, onValueChange: () -> Unit) {
 @Composable
 fun ShowTagsDialog() {
     SouthWestTheme {
-        TagsDialog("mobile", WebWidgetConfig.FilterType.CATEGORY, onConfirmed = {}) {}
+        TagsDialog("mobile", CATEGORY, onConfirmed = {}) {}
     }
 }
