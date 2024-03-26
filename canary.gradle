@@ -2,7 +2,6 @@
 tasks.register('updateCanaryUrl', Task) {
     doLast {
         if (project.hasProperty("canaryUrl")) {
-            println("Canary URL: ${project.canaryUrl}")
             Properties properties = new Properties()
             File propertiesFile = new File('canary.properties')
             propertiesFile.withOutputStream {
@@ -10,7 +9,7 @@ tasks.register('updateCanaryUrl', Task) {
                 properties.store(it, null)
             }
         } else {
-            println("Canary URL not found")
+            throw new GradleException("canaryUrl property is missing")
         }
     }
 }
