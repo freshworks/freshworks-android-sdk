@@ -10,19 +10,6 @@ plugins {
 
 apply from: "${rootDir}/canary.gradle"
 
-Properties properties = new Properties()
-File propertiesFile = new File('canary.properties')
-if (propertiesFile.exists()) {
-    properties.load(propertiesFile.newDataInputStream())
-    def canaryUrl = properties.getProperty("url")
-    println(canaryUrl)
-    repositories {
-        maven {
-            url canaryUrl
-        }
-    }
-}
-
 allprojects {
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
         kotlinOptions {
