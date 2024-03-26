@@ -8,13 +8,30 @@ plugins {
 
 apply from: "../config/detekt.gradle"
 
+//See if version info is available for canary builds.
+Properties properties = new Properties()
+File propertiesFile = new File('canary.properties')
+
+def defaultVersion = "0.0.1-beta"
+def version = defaultVersion
+
+if (propertiesFile.exists()) {
+    properties.load(propertiesFile.newDataInputStream())
+    def canaryUrl = properties.getProperty("url")
+
+    if (canaryUrl != null) {
+        def canaryVersion = properties.getProperty("version")
+        version = canaryVersion
+    }
+}
+
 android {
     namespace 'com.freshworks.southwest'
     compileSdk 34
 
     defaultConfig {
         applicationId "com.freshworks.southwest"
-        minSdk 21
+        minSdk 23
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -53,7 +70,7 @@ android {
 
 dependencies {
 
-    implementation "com.freshworks.sdk:core:0.0.1-beta"
+    implementation "com.freshworks.sdk:core:$version"
 
     detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.23.1"
     implementation "androidx.compose.runtime:runtime:1.5.4"

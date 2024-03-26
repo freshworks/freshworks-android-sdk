@@ -7,10 +7,23 @@ pluginManagement {
 }
 
 dependencyResolutionManagement {
-//    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
+    Properties properties = new Properties()
+    File propertiesFile = new File('canary.properties')
+    def canaryUrl = null
+    if (propertiesFile.exists()) {
+        properties.load(propertiesFile.newDataInputStream())
+         canaryUrl = properties.getProperty("url")
+        println(canaryUrl)
+    }
     repositories {
         google()
         mavenCentral()
+        if(canaryUrl != null) {
+            maven {
+                url canaryUrl
+            }
+        }
     }
 }
 
