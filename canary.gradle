@@ -1,16 +1,16 @@
 
-tasks.register('updateCanaryUrl', Task) {
+tasks.register('updateSdkProps', Task) {
     doLast {
-        if (project.hasProperty("canaryUrl") && project.hasProperty("canaryVersion")) {
+        if (project.hasProperty("version")) {
             Properties properties = new Properties()
-            File propertiesFile = new File('canary.properties')
+            File propertiesFile = new File('sdk.properties')
             propertiesFile.withOutputStream {
-                properties.setProperty("url", canaryUrl)
-                properties.setProperty("version", canaryVersion)
+                properties.setProperty("url", url)
+                properties.setProperty("version", version)
                 properties.store(it, null)
             }
         } else {
-            throw new GradleException("canaryUrl or canaryVersion property is missing")
+            throw new GradleException("version property is missing")
         }
     }
 }

@@ -10,19 +10,14 @@ apply from: "../config/detekt.gradle"
 
 //See if version info is available for canary builds.
 Properties properties = new Properties()
-File propertiesFile = new File('canary.properties')
-
-def defaultVersion = "0.0.1-beta"
-def version = defaultVersion
+File propertiesFile = new File('sdk.properties')
+def sdkVersion = null
 
 if (propertiesFile.exists()) {
     properties.load(propertiesFile.newDataInputStream())
-    def canaryUrl = properties.getProperty("url")
-
-    if (canaryUrl != null) {
-        def canaryVersion = properties.getProperty("version")
-        version = canaryVersion
-    }
+    sdkVersion = properties.getProperty("version")
+} else {
+    throw new GradleException("SDK version not found. Please configure sdk.properties file with 'version' attribute.")
 }
 
 android {
@@ -70,7 +65,7 @@ android {
 
 dependencies {
 
-    implementation "com.freshworks.sdk:core:$version"
+    implementation "com.freshworks.sdk:core:$sdkVersion"
 
     detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.23.1"
     implementation "androidx.compose.runtime:runtime:1.5.4"

@@ -9,19 +9,18 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
     Properties properties = new Properties()
-    File propertiesFile = new File('canary.properties')
-    def canaryUrl = null
+    File propertiesFile = new File('sdk.properties')
+    def mavenUrl = null
     if (propertiesFile.exists()) {
         properties.load(propertiesFile.newDataInputStream())
-         canaryUrl = properties.getProperty("url")
-        println(canaryUrl)
+        mavenUrl = properties.getProperty("url")
     }
     repositories {
         google()
         mavenCentral()
-        if(canaryUrl != null) {
+        if(mavenUrl != null) {
             maven {
-                url canaryUrl
+                url mavenUrl
             }
         }
     }
