@@ -1,12 +1,16 @@
 
 tasks.register('updateSdkProps', Task) {
     doLast {
-        if (project.hasProperty("version")) {
+        if (project.hasProperty("sdkVersion")) {
             Properties properties = new Properties()
             File propertiesFile = new File('sdk.properties')
             propertiesFile.withOutputStream {
-                properties.setProperty("url", url)
-                properties.setProperty("version", version)
+                if(project.hasProperty("url")) {
+                    properties.setProperty("url", url)
+                } else {
+                    properties.remove("url")
+                }
+                properties.setProperty("version", sdkVersion)
                 properties.store(it, null)
             }
         } else {
