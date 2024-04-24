@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomAppBar
@@ -27,6 +28,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableIntState
@@ -39,11 +41,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.freshworks.sdk.BuildConfig
 import com.freshworks.sdk.FreshworksSDK
 import com.freshworks.sdk.events.FreshchatEvent
 import com.freshworks.southwest.R
@@ -265,20 +271,55 @@ class HomeActivity : ComponentActivity() {
             )
             AddDivider()
             DrawerElement(
-                title = stringResource(id = R.string.settings),
-                subTitle = stringResource(id = R.string.notification_password)
+                title = stringResource(id = R.string.developer_settings),
+                subTitle = stringResource(id = R.string.developer_settings_desc)
             ) {
                 Intent(applicationContext, SettingsActivity::class.java).also {
                     startActivity(it)
                 }
             }
             AddDivider()
+            AddSDKVersionDetails()
             if (userName.isNotEmpty()) {
                 LogOut {
                     DataStore.setUserName("")
                     this@HomeActivity.recreate()
                 }
             }
+        }
+    }
+
+    @Composable
+    private fun AddSDKVersionDetails() {
+        val versionName = FreshworksSDK.getSDKVersionName()
+        val versionCode = FreshworksSDK.getSDKVersionCode()
+        val buildId = BuildConfig.SDK_BUILD_ID
+        Column(
+            modifier = Modifier
+                .width(272.dp)
+                .wrapContentHeight()
+        ) {
+            Text(
+                text = stringResource(
+                    id = R.string.sdk_version, versionName, versionCode
+                ),
+                fontSize = 14.sp,
+                fontWeight = FontWeight.W600,
+                fontFamily = FontFamily.SansSerif,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(start = 16.dp, top = 20.dp, bottom = 4.dp)
+            )
+
+            Text(
+                text = stringResource(
+                    id = R.string.sdk_build_id, buildId
+                ),
+                fontSize = 12.sp,
+                fontWeight = FontWeight.W300,
+                fontFamily = FontFamily.SansSerif,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(start = 16.dp, top = 4.dp, bottom = 16.dp, end = 16.dp)
+            )
         }
     }
 }

@@ -2,6 +2,7 @@ package com.freshworks.southwest.ui.activity
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,6 +11,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -23,12 +25,16 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ShapeDefaults
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -37,8 +43,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.freshworks.sdk.FreshworksSDK
-import com.freshworks.sdk.data.FaqTags
-import com.freshworks.sdk.data.WebWidgetConfig
+import com.freshworks.sdk.data.FaqOptions
+import com.freshworks.sdk.data.FilterType
 import com.freshworks.sdk.events.FreshchatEvent.UserState
 import com.freshworks.southwest.R
 import com.freshworks.southwest.SouthWestApp
@@ -46,20 +52,25 @@ import com.freshworks.southwest.components.buttons.ButtonText
 import com.freshworks.southwest.components.dialogs.ChangeLanguageDialog
 import com.freshworks.southwest.components.dialogs.IdentifyUserDialog
 import com.freshworks.southwest.components.dialogs.LoadAccountForm
+import com.freshworks.southwest.components.dialogs.LocalizationSupportPropertiesDialog
 import com.freshworks.southwest.components.dialogs.ProgressBarDialog
+import com.freshworks.southwest.components.dialogs.PropertiesStringResource
 import com.freshworks.southwest.components.dialogs.TagsDialog
 import com.freshworks.southwest.components.dialogs.TextFieldDialog
 import com.freshworks.southwest.components.dialogs.UpdateAuthTokenDialog
+import com.freshworks.southwest.components.dialogs.UpdateCustomPropertiesDialog
 import com.freshworks.southwest.components.dialogs.UpdateUserDialog
 import com.freshworks.southwest.data.DataStore
+import com.freshworks.southwest.data.DataStore.saveToastEventsState
 import com.freshworks.southwest.data.DialogConfig
 import com.freshworks.southwest.data.IdentifyUserData
 import com.freshworks.southwest.ui.theme.SouthWestTheme
-import com.freshworks.southwest.utils.showToast
 import com.freshworks.southwest.utils.toMap
+import com.freshworks.southwest.utils.toast
 import java.util.Locale
 
 const val TAG = "SettingsActivity"
+const val DELAY_MILLIS = 10000L
 
 class SettingsActivity : ComponentActivity() {
 
@@ -71,24 +82,27 @@ class SettingsActivity : ComponentActivity() {
             SouthWestTheme {
                 Scaffold(
                     topBar = {
-                        TopAppBar(title = {
-                            Text(
-                                text = stringResource(id = R.string.settings),
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                            )
-                        }, navigationIcon = {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_back_arrow),
-                                contentDescription = stringResource(id = R.string.back),
-                                modifier = Modifier
-                                    .padding(16.dp)
-                                    .clickable {
-                                        onBackPressed()
-                                    },
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        })
+                        Row(modifier = Modifier.padding(end = 40.dp)) {
+                            TopAppBar(title = {
+                                Text(
+                                    text = stringResource(id = R.string.developer_settings),
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Bold,
+                                )
+                            }, navigationIcon = {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_back_arrow),
+                                    contentDescription = stringResource(id = R.string.back),
+                                    modifier = Modifier
+                                        .padding(16.dp)
+                                        .clickable {
+                                            onBackPressed()
+                                        },
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            })
+                            ToastEventsSwitch()
+                        }
                     },
                 ) { paddingValues -> SetContent(paddingValues) }
             }
@@ -109,7 +123,7 @@ class SettingsActivity : ComponentActivity() {
             ShowConversations()
             OpenParallelConversation()
             ButtonText(textId = R.string.show_faqs) {
-                FreshworksSDK.showFAQs(this@SettingsActivity, FaqTags.faqTags {})
+                FreshworksSDK.showFAQs(this@SettingsActivity, FaqOptions.faqOptions {})
             }
             ConversationAndFaqTags()
             IdentifyUser()
@@ -118,7 +132,12 @@ class SettingsActivity : ComponentActivity() {
             UpdateJWT()
             ChangeWidgetLanguage()
             ChangeUserLanguage()
+            LogUserEvent()
             LoadAccount()
+            UpdateBotVariables()
+            UpdateCustomConversationProperties()
+            UpdateStaticTextLocalization()
+            DismissFreshChatViews()
         }
     }
 
@@ -181,12 +200,12 @@ class SettingsActivity : ComponentActivity() {
                     DataStore.setTags(config.tags)
                     DataStore.setFilterType(config.filterType)
                     val tagsList = config.tags.split(",").map { it.trim() }
-                    if (config.filterType == WebWidgetConfig.FilterType.CONVERSATION) {
+                    if (config.filterType == FilterType.CONVERSATION) {
                         FreshworksSDK.showConversations(this, tagsList)
                     } else {
                         FreshworksSDK.showFAQs(
                             this@SettingsActivity,
-                            FaqTags(tags = tagsList, config.filterType)
+                            FaqOptions(tags = tagsList, config.filterType)
                         )
                     }
                     openDialog.value = false
@@ -197,6 +216,86 @@ class SettingsActivity : ComponentActivity() {
         }
         ButtonText(textId = R.string.conversation_faq_tags) {
             openDialog.value = true
+        }
+    }
+
+    @Composable
+    private fun UpdateBotVariables() {
+        val openUpdateCustomBotVariables = rememberSaveable { mutableStateOf(false) }
+        if (openUpdateCustomBotVariables.value) {
+            UpdateCustomPropertiesDialog(
+                propertiesStringResource = PropertiesStringResource(
+                    dialogTitle = R.string.update_custom_bot_variables,
+                    propertiesFormDescription = R.string.bot_variables_description,
+                    labelId = R.string.bot_variables,
+                ),
+                customProperties = DataStore.getBotVariables(),
+                onConfirmed = { botVariables ->
+                    DataStore.setBotVariablesValues(botVariables)
+                    FreshworksSDK.showConversations(this@SettingsActivity)
+                    FreshworksSDK.setBotVariables(botVariables)
+                    openUpdateCustomBotVariables.value = false
+                },
+                onDismissed = {
+                    openUpdateCustomBotVariables.value = false
+                }
+            )
+        }
+        ButtonText(textId = R.string.update_custom_bot_variables) {
+            openUpdateCustomBotVariables.value = true
+        }
+    }
+
+    @Composable
+    private fun UpdateStaticTextLocalization() {
+        val openStaticLocalizationSupportDialog = rememberSaveable { mutableStateOf(false) }
+        if (openStaticLocalizationSupportDialog.value) {
+            LocalizationSupportPropertiesDialog(
+                dialogTitle = R.string.update_localization_support,
+                headerProperties = DataStore.getLocalizationConfigHeaderProperties(),
+                contentProperties = DataStore.getLocalizationConfigContentProperties(),
+                onConfirmed = { headerProperties, contentProperties ->
+                    DataStore.setLocalizationConfigHeaderProperties(headerProperties)
+                    DataStore.setLocalizationConfigContentProperties(contentProperties)
+                    FreshworksSDK.setConfigProperties(
+                        headerProperties,
+                        contentProperties
+                    )
+                    openStaticLocalizationSupportDialog.value = false
+                },
+                onDismissed = {
+                    openStaticLocalizationSupportDialog.value = false
+                }
+            )
+        }
+        ButtonText(textId = R.string.update_localization_support) {
+            openStaticLocalizationSupportDialog.value = true
+        }
+    }
+
+    @Composable
+    private fun UpdateCustomConversationProperties() {
+        val openCustomConversationPropertiesDialog = rememberSaveable { mutableStateOf(false) }
+        if (openCustomConversationPropertiesDialog.value) {
+            UpdateCustomPropertiesDialog(
+                propertiesStringResource = PropertiesStringResource(
+                    dialogTitle = R.string.update_custom_conversation_properties,
+                    propertiesFormDescription = R.string.conversation_properties_description,
+                    labelId = R.string.conversation_properties,
+                ),
+                customProperties = DataStore.getConversationProperties(),
+                onConfirmed = { conversationProperties ->
+                    DataStore.setConversationProperties(conversationProperties)
+                    FreshworksSDK.setConversationProperties(conversationProperties)
+                    openCustomConversationPropertiesDialog.value = false
+                },
+                onDismissed = {
+                    openCustomConversationPropertiesDialog.value = false
+                }
+            )
+        }
+        ButtonText(textId = R.string.update_custom_conversation_properties) {
+            openCustomConversationPropertiesDialog.value = true
         }
     }
 
@@ -269,11 +368,12 @@ class SettingsActivity : ComponentActivity() {
             resetDialog.value = true
             FreshworksSDK.resetUser({
                 resetDialog.value = false
+                toast(it)
+                FreshworksSDK.setUserDetails()
                 DataStore.clearUser()
-                showToast(getString(R.string.reset_user_success))
             }) {
                 resetDialog.value = false
-                showToast(getString(R.string.reset_user_failed))
+                toast(it)
             }
         }
         if (resetDialog.value) {
@@ -378,7 +478,11 @@ class SettingsActivity : ComponentActivity() {
                 FreshworksSDK.resetUser({}) {}
                 FreshworksSDK.initialize(
                     this@SettingsActivity,
-                    it.copy(languageCode = DataStore.getWidgetLocale())
+                    it.copy(
+                        languageCode = DataStore.getWidgetLocale(),
+                        headerProperties = DataStore.getLocalizationConfigHeaderProperties(),
+                        contentProperties = DataStore.getLocalizationConfigContentProperties()
+                    )
                 ) {
                     Log.i(SOUTH_WEST, "Resetting current user and loading new SDK configuration")
                 }
@@ -389,6 +493,46 @@ class SettingsActivity : ComponentActivity() {
         ButtonText(textId = R.string.load_account) {
             openLoadAccountDialog.value = true
         }
+    }
+
+    @Composable
+    private fun LogUserEvent() {
+        val logUserEventDialog = rememberSaveable { mutableStateOf(false) }
+        if (logUserEventDialog.value) {
+            TextFieldDialog(
+                config = DialogConfig(
+                    title = R.string.log_user_event,
+                    positiveText = R.string.send,
+                    showDescription = true
+                ),
+                textField1 = Pair(R.string.event_name, DataStore.getInboundEventName()),
+                textField2 = Pair(R.string.event_value, DataStore.getInboundEventData()),
+                onConfirmed = {
+                    logUserEventDialog.value = false
+                    if (it.field1.isEmpty()) {
+                        toast(getString(R.string.inbound_event_invalid_input))
+                    } else {
+                        val message = getString(R.string.event_sent, it.field1)
+                        DataStore.saveInboundEventName(it.field1)
+                        DataStore.saveInboundEventData(it.field2)
+                        if (it.field2.isEmpty()) {
+                            FreshworksSDK.trackEvent(it.field1, emptyMap())
+                            toast(message)
+                        } else {
+                            val eventValue = it.field2.toMap()
+                            if (eventValue.isNotEmpty()) {
+                                FreshworksSDK.trackEvent(it.field1, it.field2.toMap())
+                                toast(message)
+                            } else {
+                                toast(getString(R.string.inbound_event_invalid_input))
+                            }
+                        }
+                    }
+                },
+                onDismissed = { logUserEventDialog.value = false }
+            )
+        }
+        ButtonText(textId = R.string.log_user_event) { logUserEventDialog.value = true }
     }
 
     private fun handleUserStates(userState: String) {
@@ -407,6 +551,29 @@ class SettingsActivity : ComponentActivity() {
             else -> {
                 Log.d(TAG, "User state is $userState")
             }
+        }
+    }
+
+    @Composable
+    fun ToastEventsSwitch() {
+        var toastEventsState by remember { mutableStateOf(DataStore.getToastEventsState()) }
+        Switch(
+            checked = toastEventsState,
+            onCheckedChange = {
+                toastEventsState = it
+                saveToastEventsState(it)
+            }, modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
+        )
+    }
+
+    @Composable
+    fun DismissFreshChatViews() {
+        ButtonText(textId = R.string.dismiss_freshChat_views) {
+            Handler().postDelayed({
+                Log.d(TAG, "Dismissing WebWidget")
+                FreshworksSDK.dismissFreshchatViews()
+            }, DELAY_MILLIS)
+            FreshworksSDK.showConversations(this@SettingsActivity)
         }
     }
 }

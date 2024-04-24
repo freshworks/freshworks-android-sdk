@@ -1,6 +1,8 @@
 package com.freshworks.southwest.components.dialogs
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
@@ -12,6 +14,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.freshworks.southwest.R
 import com.freshworks.southwest.components.FieldConfig
 import com.freshworks.southwest.components.FormField
@@ -49,13 +53,14 @@ fun TextFieldDialog(
                     config = FieldConfig(
                         isBlank = field1.value.isBlank(),
                         trailingIcon = {
-                            ClearButton {
-                                field1.value = ""
-                            }
+                            ClearButton { field1.value = "" }
                         }
                     ),
                     onValueChange = { field1.value = it }
                 )
+                if (config.showDescription) {
+                    ShowDescription()
+                }
                 FormField(
                     labelId = textField2.first,
                     value = field2.value,
@@ -84,6 +89,15 @@ fun TextFieldDialog(
         dismissButton = {
             DismissButton { onDismissed.invoke() }
         }
+    )
+}
+
+@Composable
+fun ShowDescription(@StringRes description: Int = R.string.event_data_description) {
+    Text(
+        text = stringResource(id = description),
+        fontSize = 12.sp,
+        modifier = Modifier.padding(horizontal = 8.dp)
     )
 }
 

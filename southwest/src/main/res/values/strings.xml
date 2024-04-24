@@ -10,8 +10,8 @@
     <string name="visa_34">Visa **34</string>
     <string name="my_reviews">My reviews</string>
     <string name="reviews_for_4_items">Reviews for 4 items</string>
-    <string name="settings">Settings</string>
-    <string name="notification_password">Notification, password</string>
+    <string name="developer_settings">Developer Settings</string>
+    <string name="developer_settings_desc">To develop and test</string>
     <string name="contact_us">Contact us</string>
     <string name="talk_to_an_agent">Talk to an agent</string>
     <string name="login">"Login"</string>
@@ -61,7 +61,6 @@
     <string name="phone_number">Phone Number</string>
     <string name="phone_country">Phone Country</string>
     <string name="custom_properties">Custom Properties</string>
-    <string name="properties_description">Please enter the properties in the below format. Eg:Key1:value1,key2:value2</string>
     <string name="app_id">App ID</string>
     <string name="app_key">App Key</string>
     <string name="app_domain">Domain</string>
@@ -76,6 +75,37 @@
     <string name="not_found">Not found</string>
     <string name="clear">Clear</string>
     <string name="user_alias">User Alias</string>
+    <string name="properties_description">Please enter the properties in the below format. Eg:Key1: value1, key2: value2</string>
+    <string name="event_data_description">Please enter the event value in the below format. Eg:Key1: value1, key2: value2</string>
+
+    <!-- Bot Variables -->
+    <string name="bot_variables">Bot Variables</string>
+    <string name="bot_variables_placeholder">Enter bot variables</string>
+    <string name="update_custom_bot_variables">Update Custom Bot Variables</string>
+    <string name="bot_variables_description">Please enter the bot variables in the below json format.
+"""
+{
+    \"status\": \"active\",
+    \"type\": 13
+}"""
+    </string>
+
+    <!--Custom Conversation Properties -->
+    <string name="conversation_properties">Conversation Properties</string>
+    <string name="conversation_properties_placeholder">Enter custom conversation properties</string>
+    <string name="update_custom_conversation_properties">Update custom conversation properties</string>
+    <string name="conversation_properties_description">Please enter the conversation properties in the below json format.
+"""
+{
+    \"status\": \"active\",
+    \"type\": 13
+}"""
+    </string>
+
+    <!-- Static Localization support -->
+    <string name="update_localization_support">Localization Support</string>
+    <string name="config_header_property_label_id">Header Property</string>
+    <string name="config_content_property_label_id">Content Property</string>
 
     <!--    Content Descriptions-->
     <string name="profile_icon">Profile Icon</string>
@@ -92,8 +122,6 @@
     <string name="order_placed">Order placed</string>
     <string name="menu">Menu</string>
     <string name="resetting_user">Resetting User</string>
-    <string name="reset_user_success">User reset was successful</string>
-    <string name="reset_user_failed">User reset has failed</string>
 
     <!-- Change Language -->
     <string name="change_user_language">Change User Language</string>
@@ -135,4 +163,14 @@
     <string name="turkish">Turkish</string>
     <string name="ukrainian">Ukrainian</string>
     <string name="vietnamese">Vietnamese</string>
+    <string name="link_clicked">Link Clicked: %s</string>
+    <string name="log_user_event">Log User Event</string>
+    <string name="event_name">Event Name</string>
+    <string name="event_value">Event Value</string>
+    <string name="event_sent">Event Sent:%s</string>
+    <string name="inbound_event_invalid_input">Invalid Input</string>
+    <string name="send">Send</string>
+    <string name="sdk_version">SDK Version: %s(%d)</string>
+    <string name="sdk_build_id">SDK Build ID: %s</string>
+    <string name="dismiss_freshChat_views">Dismiss FreshChat Views</string>
 </resources>
