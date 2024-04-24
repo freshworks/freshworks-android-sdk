@@ -1,8 +1,14 @@
 package com.freshworks.southwest.utils
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import com.freshworks.southwest.R
+import com.freshworks.southwest.TAG
+import com.freshworks.southwest.data.DataStore.getToastEventsState
+
+private val validMapPattern =
+    Regex("^\\s*\\S+\\s*:\\s*\\S+\\s*(,\\s*\\S+\\s*:\\s*\\S+\\s*)*$")
 
 val languageMap = mapOf(
     R.string.none to "",
@@ -45,17 +51,26 @@ fun getLanguageRes(key: Int): String {
 }
 
 fun String.toMap(): Map<String, String> {
-    return if (isNotEmpty()) {
-        split(",").map { it.split(":") }.associate { (key, value) -> key to value }
-    } else {
+    return try {
+        if (validMapPattern.matches(this)) {
+            split(", ").map { it.split(": ") }.associate { (key, value) -> key to value }
+        } else {
+            emptyMap()
+        }
+    } catch (e: Exception) {
+        Log.e(TAG, "Error converting string to map: $e")
         emptyMap()
     }
 }
 
-fun Context.showToast(text: String, duration: Int = Toast.LENGTH_SHORT) {
-    Toast.makeText(
-        this,
-        text,
-        duration
-    ).show()
+fun Context.toast(message: CharSequence) =
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+
+fun Context.logEvent(eventMessage: String, data: String, toastData: Boolean = false) {
+    val dataMessage = if (data.isNotEmpty()) ": $data" else data
+    if (getToastEventsState()) {
+        val toastMessage = if (toastData) eventMessage + dataMessage else eventMessage
+        toast(toastMessage)
+    }
+    Log.d("$TAG $eventMessage", dataMessage)
 }
