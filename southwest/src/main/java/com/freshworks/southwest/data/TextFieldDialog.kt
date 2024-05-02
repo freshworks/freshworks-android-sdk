@@ -10,5 +10,6 @@ data class TextFieldDialog(
 
 data class DialogConfig(
     @StringRes val title: Int = R.string.open_Conversation,
-    @StringRes val positiveText: Int = R.string.open
+    @StringRes val positiveText: Int = R.string.open,
+    val showDescription: Boolean = false
 )

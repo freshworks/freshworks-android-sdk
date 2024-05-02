@@ -1,9 +1,9 @@
 package com.freshworks.southwest.data
 
-import com.freshworks.sdk.data.WebWidgetConfig
+import com.freshworks.sdk.data.FilterType
 
 data class TagsConfig(
     val tags: String,
-    @WebWidgetConfig.FilterType
+    @FilterType
     val filterType: String
 )

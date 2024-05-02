@@ -1,7 +1,6 @@
 package com.freshworks.southwest.components.dialogs
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
@@ -15,8 +14,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.freshworks.southwest.R
 import com.freshworks.southwest.components.FieldConfig
 import com.freshworks.southwest.components.FormField
@@ -163,11 +160,7 @@ fun ContactDetails(user: User, onValueChange: (User) -> Unit) {
 
 @Composable
 fun CustomProperties(user: User, onValueChange: (User) -> Unit) {
-    Text(
-        text = stringResource(id = R.string.properties_description),
-        fontSize = 12.sp,
-        modifier = Modifier.padding(horizontal = 8.dp)
-    )
+    ShowDescription(R.string.properties_description)
     FormField(
         labelId = R.string.custom_properties,
         value = user.properties,

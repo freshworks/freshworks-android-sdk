@@ -2,7 +2,7 @@ package com.freshworks.southwest.data
 
 import android.content.SharedPreferences
 import com.freshworks.sdk.data.SDKConfig
-import com.freshworks.southwest.utils.AccountConfig
+import com.freshworks.southwest.utils.AccountUtils
 import com.google.gson.Gson
 
 const val USER_NAME = "USER_NAME"
@@ -17,6 +17,13 @@ const val FILTER_TYPE = "FILTER_TYPE"
 const val USER = "USER"
 const val USER_LOCALE = "USER_LOCALE"
 const val WIDGET_LOCALE = "WIDGET_LOCALE"
+const val BOT_VARIABLE = "BOT_VARIABLE"
+const val CONVERSATION_PROPERTY = "CONVERSATION_PROPERTY"
+const val LOCALIZATION_CONFIG_HEADER_PROPERTY = "LOCALIZATION_CONFIG_HEADER_PROPERTY"
+const val LOCALIZATION_CONFIG_CONTENT_PROPERTY = "LOCALIZATION_CONFIG_CONTENT_PROPERTY"
+const val EVENT_SWITCH_STATE = "EVENT_SWITCH_STATE"
+const val INBOUND_EVENT_NAME = "INBOUND_EVENT_NAME"
+const val INBOUND_EVENT_DATA = "INBOUND_EVENT_DATA"
 
 object DataStore {
 
@@ -53,7 +60,7 @@ object DataStore {
 
     fun getSelectedAccount(): SDKConfig {
         val json = sharedPreferences.getString(SELECTED_ACCOUNT, null) ?: ""
-        return gson.fromJson(json, SDKConfig::class.java) ?: AccountConfig.defaultAccount
+        return gson.fromJson(json, SDKConfig::class.java) ?: AccountUtils.defaultAccount
     }
 
     fun setUserAlias(id: String) {
@@ -123,6 +130,7 @@ object DataStore {
 
     fun clearUser() {
         setUserName("")
+        setUser(User())
         saveUserLocale("")
         setUserAlias("")
         setExternalId("")
@@ -130,5 +138,61 @@ object DataStore {
         setConvRefId("")
         setConvTopic("")
         setSelectedAccount(getSelectedAccount().copy(jwtAuthToken = ""))
+    }
+
+    fun setBotVariablesValues(botVariables: String) {
+        sharedPreferences.edit().putString(BOT_VARIABLE, botVariables).apply()
+    }
+
+    fun getBotVariables(): String {
+        return sharedPreferences.getString(BOT_VARIABLE, null) ?: ""
+    }
+
+    fun setConversationProperties(conversationProperties: String) {
+        sharedPreferences.edit().putString(CONVERSATION_PROPERTY, conversationProperties).apply()
+    }
+
+    fun getConversationProperties(): String {
+        return sharedPreferences.getString(CONVERSATION_PROPERTY, null) ?: ""
+    }
+
+    fun setLocalizationConfigHeaderProperties(headerProperties: String) {
+        sharedPreferences.edit().putString(LOCALIZATION_CONFIG_HEADER_PROPERTY, headerProperties).apply()
+    }
+
+    fun getLocalizationConfigHeaderProperties(): String {
+        return sharedPreferences.getString(LOCALIZATION_CONFIG_HEADER_PROPERTY, null) ?: ""
+    }
+
+    fun setLocalizationConfigContentProperties(contentProperties: String) {
+        sharedPreferences.edit().putString(LOCALIZATION_CONFIG_CONTENT_PROPERTY, contentProperties).apply()
+    }
+
+    fun getLocalizationConfigContentProperties(): String {
+        return sharedPreferences.getString(LOCALIZATION_CONFIG_CONTENT_PROPERTY, null) ?: ""
+    }
+
+    fun saveToastEventsState(eventSwitchState: Boolean) {
+        sharedPreferences.edit().putBoolean(EVENT_SWITCH_STATE, eventSwitchState).apply()
+    }
+
+    fun getToastEventsState(): Boolean {
+        return sharedPreferences.getBoolean(EVENT_SWITCH_STATE, false)
+    }
+
+    fun saveInboundEventName(eventName: String) {
+        sharedPreferences.edit().putString(INBOUND_EVENT_NAME, eventName).apply()
+    }
+
+    fun saveInboundEventData(eventData: String) {
+        sharedPreferences.edit().putString(INBOUND_EVENT_DATA, eventData).apply()
+    }
+
+    fun getInboundEventName(): String {
+        return sharedPreferences.getString(INBOUND_EVENT_NAME, null) ?: ""
+    }
+
+    fun getInboundEventData(): String {
+        return sharedPreferences.getString(INBOUND_EVENT_DATA, null) ?: ""
     }
 }
