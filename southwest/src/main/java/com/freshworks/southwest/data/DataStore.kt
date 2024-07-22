@@ -24,6 +24,7 @@ const val LOCALIZATION_CONFIG_CONTENT_PROPERTY = "LOCALIZATION_CONFIG_CONTENT_PR
 const val EVENT_SWITCH_STATE = "EVENT_SWITCH_STATE"
 const val INBOUND_EVENT_NAME = "INBOUND_EVENT_NAME"
 const val INBOUND_EVENT_DATA = "INBOUND_EVENT_DATA"
+const val USER_ACTION_STATE = "USER_ACTION_STATE"
 
 object DataStore {
 
@@ -178,6 +179,14 @@ object DataStore {
 
     fun getToastEventsState(): Boolean {
         return sharedPreferences.getBoolean(EVENT_SWITCH_STATE, false)
+    }
+
+    fun saveUserActionState(userActionState: Boolean) {
+        sharedPreferences.edit().putBoolean(USER_ACTION_STATE, userActionState).apply()
+    }
+
+    fun getUserActionState(): Boolean {
+        return sharedPreferences.getBoolean(USER_ACTION_STATE, false)
     }
 
     fun saveInboundEventName(eventName: String) {

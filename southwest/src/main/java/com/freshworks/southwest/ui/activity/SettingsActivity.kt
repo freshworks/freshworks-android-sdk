@@ -25,16 +25,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ShapeDefaults
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -50,6 +46,7 @@ import com.freshworks.southwest.R
 import com.freshworks.southwest.SouthWestApp
 import com.freshworks.southwest.components.buttons.ButtonText
 import com.freshworks.southwest.components.dialogs.ChangeLanguageDialog
+import com.freshworks.southwest.components.dialogs.ConfigureSwitcherDialog
 import com.freshworks.southwest.components.dialogs.IdentifyUserDialog
 import com.freshworks.southwest.components.dialogs.LoadAccountForm
 import com.freshworks.southwest.components.dialogs.LocalizationSupportPropertiesDialog
@@ -62,6 +59,7 @@ import com.freshworks.southwest.components.dialogs.UpdateCustomPropertiesDialog
 import com.freshworks.southwest.components.dialogs.UpdateUserDialog
 import com.freshworks.southwest.data.DataStore
 import com.freshworks.southwest.data.DataStore.saveToastEventsState
+import com.freshworks.southwest.data.DataStore.saveUserActionState
 import com.freshworks.southwest.data.DialogConfig
 import com.freshworks.southwest.data.IdentifyUserData
 import com.freshworks.southwest.ui.theme.SouthWestTheme
@@ -101,7 +99,6 @@ class SettingsActivity : ComponentActivity() {
                                     tint = MaterialTheme.colorScheme.primary
                                 )
                             })
-                            ToastEventsSwitch()
                         }
                     },
                 ) { paddingValues -> SetContent(paddingValues) }
@@ -135,9 +132,11 @@ class SettingsActivity : ComponentActivity() {
             LogUserEvent()
             LoadAccount()
             UpdateBotVariables()
+            UpdatePreChatFormTemplate()
             UpdateCustomConversationProperties()
             UpdateStaticTextLocalization()
             DismissFreshChatViews()
+            Configure()
         }
     }
 
@@ -243,6 +242,40 @@ class SettingsActivity : ComponentActivity() {
         }
         ButtonText(textId = R.string.update_custom_bot_variables) {
             openUpdateCustomBotVariables.value = true
+        }
+    }
+
+    @Composable
+    private fun UpdatePreChatFormTemplate() {
+        val openUpdatePreChatFormDialog = rememberSaveable { mutableStateOf(false) }
+        if (openUpdatePreChatFormDialog.value) {
+            UpdateCustomPropertiesDialog(
+                propertiesStringResource = PropertiesStringResource(
+                    dialogTitle = R.string.update_pre_chat_form_template,
+                    propertiesFormDescription = R.string.pre_chat_form_description,
+                    labelId = R.string.pre_chat_form_template_label,
+                ),
+                customProperties = DataStore.getSelectedAccount().preChatFormTemplate ?: "",
+                onConfirmed = { template ->
+                    DataStore.setSelectedAccount(
+                        account = DataStore.getSelectedAccount()
+                            .copy(preChatFormTemplate = template)
+                    )
+                    FreshworksSDK.initialize(this, DataStore.getSelectedAccount()) {
+                        Log.i(
+                            SOUTH_WEST,
+                            "Updating the pre-chat form template and loading new SDK configuration"
+                        )
+                    }
+                    openUpdatePreChatFormDialog.value = false
+                },
+                onDismissed = {
+                    openUpdatePreChatFormDialog.value = false
+                }
+            )
+        }
+        ButtonText(textId = R.string.update_pre_chat_form_template) {
+            openUpdatePreChatFormDialog.value = true
         }
     }
 
@@ -555,18 +588,6 @@ class SettingsActivity : ComponentActivity() {
     }
 
     @Composable
-    fun ToastEventsSwitch() {
-        var toastEventsState by remember { mutableStateOf(DataStore.getToastEventsState()) }
-        Switch(
-            checked = toastEventsState,
-            onCheckedChange = {
-                toastEventsState = it
-                saveToastEventsState(it)
-            }, modifier = Modifier.padding(top = 5.dp, bottom = 5.dp)
-        )
-    }
-
-    @Composable
     fun DismissFreshChatViews() {
         ButtonText(textId = R.string.dismiss_freshChat_views) {
             Handler().postDelayed({
@@ -574,6 +595,25 @@ class SettingsActivity : ComponentActivity() {
                 FreshworksSDK.dismissFreshchatViews()
             }, DELAY_MILLIS)
             FreshworksSDK.showConversations(this@SettingsActivity)
+        }
+    }
+
+    @Composable
+    fun Configure() {
+        val openSwitcherDialog = rememberSaveable { mutableStateOf(false) }
+        if (openSwitcherDialog.value) {
+            ConfigureSwitcherDialog(
+                title = R.string.configurations,
+                onConfirmed = { toastEventState, userActionState ->
+                    openSwitcherDialog.value = false
+                    saveToastEventsState(toastEventState)
+                    saveUserActionState(userActionState)
+                },
+                onDismissed = { openSwitcherDialog.value = false }
+            )
+        }
+        ButtonText(textId = R.string.switcher_dialog) {
+            openSwitcherDialog.value = true
         }
     }
 }
