@@ -28,6 +28,7 @@ android {
         applicationId "com.freshworks.southwest"
         minSdk 23
         targetSdk 33
+
         versionCode 1
         versionName "1.0"
 

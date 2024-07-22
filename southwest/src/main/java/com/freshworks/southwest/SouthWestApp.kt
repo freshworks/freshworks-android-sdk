@@ -13,8 +13,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.freshworks.backend.model.User
+import com.freshworks.sdk.FreshchatUserInteractionListener
 import com.freshworks.sdk.FreshworksSDK
-import com.freshworks.sdk.R.drawable.ic_launcher_background
 import com.freshworks.sdk.core.FreshchatWebViewListener
 import com.freshworks.sdk.data.SDKConfig
 import com.freshworks.sdk.events.EventID
@@ -24,10 +24,11 @@ import com.freshworks.southwest.data.DataStore
 import com.freshworks.southwest.data.DataStore.sharedPreferences
 import com.freshworks.southwest.ui.activity.SOUTH_WEST
 import com.freshworks.southwest.utils.logEvent
+import com.freshworks.southwest.utils.toast
 
 const val TAG = "SouthWest"
 
-class SouthWestApp : Application() {
+class SouthWestApp : Application(), FreshchatUserInteractionListener {
 
     private val _unreadCount: MutableLiveData<Int> = MutableLiveData()
     val unreadCount: LiveData<Int> = _unreadCount
@@ -45,6 +46,7 @@ class SouthWestApp : Application() {
         setUpFreshworksSDK()
         setWebViewListener()
         registerBroadcastReceiver()
+        FreshworksSDK.setFreshchatUserInteractionListener(this)
     }
 
     private fun setUpFreshworksSDK() {
@@ -60,8 +62,8 @@ class SouthWestApp : Application() {
             FreshworksSDK.setNotificationConfig(
                 NotificationConfig(
                     soundEnabled = true,
-                    smallIconResId = ic_launcher_background,
-                    largeIconResId = ic_launcher_background,
+                    smallIconResId = R.drawable.ic_southwest_notification,
+                    largeIconResId = R.drawable.ic_southwest_notification,
                     importance = NotificationManager.IMPORTANCE_HIGH
                 )
             )
@@ -69,8 +71,8 @@ class SouthWestApp : Application() {
             FreshworksSDK.setNotificationConfig(
                 NotificationConfig(
                     soundEnabled = true,
-                    smallIconResId = ic_launcher_background,
-                    largeIconResId = ic_launcher_background,
+                    smallIconResId = R.drawable.ic_southwest_notification,
+                    largeIconResId = R.drawable.ic_southwest_notification,
                     importance = NotificationCompat.PRIORITY_HIGH
                 )
             )
@@ -199,6 +201,13 @@ class SouthWestApp : Application() {
             FreshworksSDK.initialize(context, sdkConfig) {
                 Log.d(TAG, "SDK initialization complete")
             }
+        }
+    }
+
+    override fun onUserInteraction() {
+        Log.d(TAG, "onUserInteraction() called")
+        if (DataStore.getUserActionState()) {
+            toast("User Interacted!!")
         }
     }
 }

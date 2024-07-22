@@ -77,6 +77,11 @@
     <string name="user_alias">User Alias</string>
     <string name="properties_description">Please enter the properties in the below format. Eg:Key1: value1, key2: value2</string>
     <string name="event_data_description">Please enter the event value in the below format. Eg:Key1: value1, key2: value2</string>
+    <string name="switcher_dialog">Configure</string>
+    <string name="done">Done</string>
+    <string name="configurations">Configurations</string>
+    <string name="outbound_events">Listen Outbound Events</string>
+    <string name="user_action_events">User Action Events</string>
 
     <!-- Bot Variables -->
     <string name="bot_variables">Bot Variables</string>
@@ -89,6 +94,15 @@
     \"type\": 13
 }"""
     </string>
+
+    <string name="pre_chat_form_template_label">Pre-chat Form Template</string>
+    <string name="update_pre_chat_form_template">Update Pre-chat Form Template</string>
+    <string name="pre_chat_form_description">Please enter the pre-chat form template in the below json format.
+"""
+{
+    \"status\": \"active\",
+    \"type\": 13
+}"""</string>
 
     <!--Custom Conversation Properties -->
     <string name="conversation_properties">Conversation Properties</string>
